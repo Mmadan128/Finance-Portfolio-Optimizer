@@ -1,0 +1,13 @@
+# Ignore node_modules (if using Node.js)
+node_modules/
+
+# Ignore Python cache files
+_pycache_/
+*.pyc
+
+# Ignore environment variables
+.env
+
+# Ignore IDE-specific files
+.vscode/
+*.iml

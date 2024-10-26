@@ -1,0 +1,136 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<style>
+    html, body {
+        height: 100%;
+        overflow-y: auto; /* Enable vertical scrolling */
+    }
+
+    .container {
+        min-height: 100vh; /* Ensure the container takes full viewport height */
+    }
+
+    .result-box {
+        max-height: 400px; /* Limit height of result box for better scrolling */
+        overflow-y: auto; /* Enable scrolling within result box if content overflows */
+        background-color: rgba(255, 255, 255, 0.8); /* Light background for better visibility */
+        border-radius: 8px; /* Rounded corners */
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    }
+
+    .form-group {
+        margin-bottom: 1.5rem; /* Increased bottom margin for form elements */
+    }
+
+    .btn {
+        margin-top: 1rem; /* Added top margin for buttons */
+    }
+
+    h1, h2 {
+        margin-bottom: 1.5rem; /* Increased bottom margin for headers */
+    }
+
+    .list-group-item {
+        margin: 0.5rem 0; /* Vertical gap between list items */
+    }
+
+    .header {
+        padding: 2rem 0; /* Added padding for the header */
+        border-bottom: 2px solid rgba(255, 255, 255, 0.2); /* Subtle bottom border */
+    }
+</style>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<div class="container mt-5">
+    <div class="header text-center mb-4">
+        <h1>Portfolio Optimization</h1>
+    </div>
+
+    <form method="POST" action="{% url 'optimization' %}">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="investment_amount">Investment Amount ($):</label>
+            <input type="number" class="form-control" id="investment_amount" name="investment_amount" required>
+        </div>
+        <div class="form-group">
+            <label for="time_horizon">Time Horizon (Years):</label>
+            <input type="number" class="form-control" id="time_horizon" name="time_horizon" required>
+        </div>
+        <div class="form-group">
+            <label for="stock_tickers">Stock Tickers (comma separated):</label>
+            <input type="text" class="form-control" id="stock_tickers" name="stock_tickers" required>
+        </div>
+        <div class="form-group">
+            <label for="stock_percentages">Stock Percentages (comma separated):</label>
+            <input type="text" class="form-control" id="stock_percentages" name="stock_percentages" required>
+        </div>
+        <button type="submit" class="btn btn-primary btn-block">Optimize Portfolio</button>
+    </form>
+
+    {% if results %}
+    <div class="result-box mt-4 border rounded p-3 shadow">
+        <h2 class="text-center">Optimization Results</h2>
+        <ul class="list-group">
+            <li class="list-group-item font-weight-bold">Optimized Weights:</li>
+            {% for ticker, weight in results.optimized_weights.items %}
+            <li class="list-group-item">{{ ticker }}: {{ weight }}%</li>
+            {% endfor %}
+            <li class="list-group-item font-weight-bold">Expected Return:</li>
+            <li class="list-group-item">{{ results.expected_return }}%</li>
+            <li class="list-group-item font-weight-bold">Expected Volatility:</li>
+            <li class="list-group-item">{{ results.expected_volatility }}%</li>
+            <li class="list-group-item font-weight-bold">Sharpe Ratio:</li>
+            <li class="list-group-item">{{ results.sharpe_ratio }}</li>
+            <li class="list-group-item font-weight-bold">Allocation:</li>
+            {% for ticker, amount in results.allocation.items %}
+            <li class="list-group-item">{{ ticker }}: ${{ amount }}</li>
+            {% endfor %}
+        </ul>
+        <canvas id="allocationChart" class="mt-4" style="max-height: 300px;"></canvas>
+    </div>
+    <script>
+        const allocationData = {
+            labels: [{% for ticker in results.allocation.keys %}'{{ ticker }}',{% endfor %}],
+            datasets: [{
+                label: 'Investment Allocation',
+                data: [{% for amount in results.allocation.values %}{{ amount }},{% endfor %}],
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.6)',
+                    'rgba(54, 162, 235, 0.6)',
+                    'rgba(255, 206, 86, 0.6)',
+                    'rgba(75, 192, 192, 0.6)',
+                    'rgba(153, 102, 255, 0.6)',
+                    'rgba(255, 159, 64, 0.6)'
+                ],
+                borderColor: 'rgba(255, 255, 255, 1)',
+                borderWidth: 1
+            }]
+        };
+
+        const config = {
+            type: 'doughnut',
+            data: allocationData,
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+                    title: {
+                        display: true,
+                        text: 'Portfolio Allocation'
+                    }
+                }
+            },
+        };
+
+        const allocationChart = new Chart(
+            document.getElementById('allocationChart'),
+            config
+        );
+    </script>
+    {% endif %}
+</div>
+{% endblock %}

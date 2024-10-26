@@ -1,0 +1,24 @@
+{% extends "layout.html" %}
+{% load static %}  
+
+
+{% block title %}Home - Portfolio Optimizer{% endblock %}
+
+{% block video_background %}
+<video class="background-video" autoplay muted loop>
+    <source src="{% static 'videos/background.mp4' %}" type="video/mp4">
+    Your browser does not support HTML5 video.
+</video>
+<div class="overlay"></div>
+{% endblock %}
+
+{% block content %}
+<div class="container mt-5 text-center text-white" style="position: relative; z-index: 1;">
+    <h1>Welcome to the Portfolio Optimizer</h1>
+    <p class="lead">Optimize your investments with cutting-edge technology and AI.</p>
+
+    <div class="mt-5">
+        <a href="{% url 'optimization' %}" class="btn btn-primary">Get Started</a>
+    </div>
+</div>
+{% endblock %}

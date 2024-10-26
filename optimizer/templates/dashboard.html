@@ -1,0 +1,140 @@
+{% extends 'layout.html' %}
+{% block title %}Dashboard - Portfolio Optimizer{% endblock %}
+
+{% block content %}
+<div class="dashboard-header">
+    <h1 class="text-center">Dashboard</h1>
+    <p class="text-center">Welcome to your Portfolio Optimizer Dashboard!</p>
+</div>
+
+<div class="row">
+    <!-- Key Metrics Cards -->
+    <div class="col-md-4">
+        <div class="card mb-4">
+            <div class="card-body">
+                <h5 class="card-title">Total Investments</h5>
+                <p class="card-text">$<span id="total-investments">100,000</span></p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card mb-4">
+            <div class="card-body">
+                <h5 class="card-title">Current Portfolio Value</h5>
+                <p class="card-text">$<span id="current-value">120,000</span></p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card mb-4">
+            <div class="card-body">
+                <h5 class="card-title">Investment Growth</h5>
+                <p class="card-text">+<span id="growth-percentage">20%</span></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <!-- Chart Area -->
+    <div class="col-md-12">
+        <h3 class="text-center">Portfolio Performance Over Time</h3>
+        <canvas id="performanceChart" style="max-height: 400px;"></canvas>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <!-- Recent Activities Table -->
+    <div class="col-md-12">
+        <h3 class="text-center">Recent Activities</h3>
+        <table class="table table-dark table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">Date</th>
+                    <th scope="col">Action</th>
+                    <th scope="col">Asset</th>
+                    <th scope="col">Amount</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>2024-10-20</td>
+                    <td>Invested</td>
+                    <td>Apple (AAPL)</td>
+                    <td>$5,000</td>
+                </tr>
+                <tr>
+                    <td>2024-10-18</td>
+                    <td>Sold</td>
+                    <td>Google (GOOGL)</td>
+                    <td>$3,000</td>
+                </tr>
+                <tr>
+                    <td>2024-10-15</td>
+                    <td>Invested</td>
+                    <td>Microsoft (MSFT)</td>
+                    <td>$2,000</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <!-- Additional Widgets -->
+    <div class="col-md-4">
+        <div class="card mb-4">
+            <div class="card-body">
+                <h5 class="card-title">Total Assets</h5>
+                <p class="card-text">$<span id="total-assets">150,000</span></p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card mb-4">
+            <div class="card-body">
+                <h5 class="card-title">Monthly Returns</h5>
+                <p class="card-text">+<span id="monthly-returns">5%</span></p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card mb-4">
+            <div class="card-body">
+                <h5 class="card-title">Investment Diversification</h5>
+                <p class="card-text">High</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    const ctx = document.getElementById('performanceChart').getContext('2d');
+    const performanceChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+            datasets: [{
+                label: 'Portfolio Value',
+                data: [100000, 105000, 110000, 115000, 120000, 125000, 130000],
+                borderColor: 'rgba(75, 192, 192, 1)',
+                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                borderWidth: 2,
+                fill: true
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+</script>
+{% endblock %}
