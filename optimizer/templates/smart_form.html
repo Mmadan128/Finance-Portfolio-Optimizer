@@ -16,7 +16,13 @@
     <label for="action">Select Action:</label><br>
     <select id="action" name="action" required>
         <option value="">--Select Action--</option>
-      
+        <option value="transfer">Transfer</option>
+        <option value="mint">Mint</option>
+        <option value="burn">Burn</option>
+        <option value="setVariable">Set Variable</option>
+        <option value="approve">Approve</option>
+        <option value="transferFrom">Transfer From</option>
+        <option value="destroy">Destroy</option>
     </select><br><br>
 
     <!-- Transfer Fields -->
@@ -28,33 +34,28 @@
         <input type="number" id="amount" name="amount" step="0.000001" min="0" required><br><br>
     </div>
 
+    <!-- Placeholder for other action fields -->
+    <div id="mintFields" class="action-fields" style="display: none;">
+        <!-- Add fields for minting action here -->
+    </div>
+    <div id="burnFields" class="action-fields" style="display: none;">
+        <!-- Add fields for burning action here -->
+    </div>
+    <div id="setVariableFields" class="action-fields" style="display: none;">
+        <!-- Add fields for setting variable action here -->
+    </div>
+    <div id="approveFields" class="action-fields" style="display: none;">
+        <!-- Add fields for approving action here -->
+    </div>
+    <div id="transferFromFields" class="action-fields" style="display: none;">
+        <!-- Add fields for transfer from action here -->
+    </div>
+    <div id="destroyFields" class="action-fields" style="display: none;">
+        <!-- Add fields for destroying action here -->
+    </div>
+
     <input type="submit" value="Submit">
 </form>
-
-<script>
-    const actionSelect = document.getElementById('action');
-    const transferFields = document.getElementById('transferFields');
-
-    actionSelect.addEventListener('change', function() {
-        transferFields.style.display = this.value === 'transfer' ? 'block' : 'none';
-    });
-</script>
-
-
-<script>
-    const actionSelect = document.getElementById('action');
-    const transferFields = document.getElementById('transferFields');
-
-    actionSelect.addEventListener('change', function() {
-        if (this.value === 'transfer') {
-            transferFields.style.display = 'block';
-        } else {
-            transferFields.style.display = 'none';
-        }
-    });
-</script>
-
-
 
 <script>
     const actionSelect = document.getElementById('action');
